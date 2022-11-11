@@ -37,24 +37,27 @@ compose.desktop {
         mainClass = "MainKt"
 
         nativeDistributions {
+            packageName = "Compose Playground"
+            packageVersion = "1.0.0"
+
             targetFormats(
                 TargetFormat.AppImage,
                 TargetFormat.Exe, TargetFormat.Msi,
-                TargetFormat.Rpm, TargetFormat.Deb,
-                TargetFormat.Dmg
+                TargetFormat.Rpm, TargetFormat.Deb
             )
-            packageName = "ComposePlayground"
-            packageVersion = "1.0.0"
 
             windows {
-                packageVersion = "1.0.0"
-                msiPackageVersion = "1.0.0"
-                exePackageVersion = "1.0.0"
+                iconFile.set(project.file("icons/Compose Playground.ico"))
+                dirChooser = true
+                shortcut = true
+                menu = true
+                upgradeUuid = "585551b2-095b-4cda-b548-7b7b1b95659d"
             }
 
             linux {
-                packageVersion = "1.0.0"
-                appRelease = "4"
+                iconFile.set(project.file("icons/Compose Playground.png"))
+                appRelease = "7"
+                shortcut = true
             }
         }
     }
