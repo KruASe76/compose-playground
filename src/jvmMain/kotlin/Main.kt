@@ -18,7 +18,7 @@ import androidx.compose.ui.window.application
 @Preview
 fun App() {
     var text by remember { mutableStateOf("Hello, World!") }
-    var otherText = "Hello, Desktop!"
+    var otherText = "Compose Desktop is wonderful!"
 
     MaterialTheme {
         Box(
@@ -37,7 +37,10 @@ fun App() {
 }
 
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
+    Window(
+        title = "How did you get here?",
+        onCloseRequest = ::exitApplication
+    ) {
         App()
     }
 }

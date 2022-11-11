@@ -54,7 +54,7 @@ compose.desktop {
 
             linux {
                 packageVersion = "1.0.0"
-                appRelease = "3"
+                appRelease = "4"
             }
         }
     }
