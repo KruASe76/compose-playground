@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS manager (
+    name TEXT NOT NULL, -- FIO
+    role TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    email TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS manager_id ON manager(name);
+
+
+selectAll:
+SELECT * FROM manager ORDER BY rowid;
+
+insert:
+INSERT INTO manager VALUES ?;
+
+deleteAll:
+DELETE FROM manager;

@@ -4,15 +4,18 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
+    id("com.squareup.sqldelight") version "1.5.4"
 }
 
 group = "me.kruase"
-version = "1.0"
+version = "1.0.0"
 
 repositories {
     google()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    maven("https://mvnrepository.com/artifact/com.squareup.sqldelight/runtime-jvm")
+    maven("https://mvnrepository.com/artifact/com.squareup.sqldelight/sqlite-driver")
 }
 
 kotlin {
@@ -26,6 +29,8 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation("com.squareup.sqldelight:runtime-jvm:1.5.4")
+                implementation("com.squareup.sqldelight:sqlite-driver:1.5.4")
             }
         }
         val jvmTest by getting
@@ -34,15 +39,17 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "MainKt"
+        mainClass = "me.kruase.compose_playground.MainKt"
 
         nativeDistributions {
             packageName = "Compose Playground"
-            packageVersion = "1.0.0"
+            packageVersion = version.toString()
+
+            modules("java.sql")
 
             targetFormats(
                 TargetFormat.AppImage,
-                TargetFormat.Exe, TargetFormat.Msi,
+                TargetFormat.Exe,
                 TargetFormat.Rpm, TargetFormat.Deb
             )
 
@@ -56,9 +63,16 @@ compose.desktop {
 
             linux {
                 iconFile.set(project.file("icons/Compose Playground.png"))
-                appRelease = "7"
+                appRelease = "8"
                 shortcut = true
             }
         }
+    }
+}
+
+sqldelight {
+    database("Database") {
+        packageName = "me.kruase.db"
+        sourceFolders = listOf("sqldelight")
     }
 }

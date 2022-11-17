@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS hotel (
+    name TEXT NOT NULL,
+    region_id INTEGER NOT NULL,
+    phone TEXT NOT NULL,
+    manager_id INTEGER NOT NULL,
+    description TEXT NOT NULL
+);
+
+
+selectAll:
+SELECT * FROM hotel ORDER BY rowid;
+
+insert:
+INSERT INTO hotel VALUES ?;
+
+deleteAll:
+DELETE FROM hotel;

@@ -1,5 +1,5 @@
-// Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-import androidx.compose.desktop.ui.tooling.preview.Preview
+package me.kruase.compose_playground
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,16 +13,36 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import com.squareup.sqldelight.sqlite.driver.JdbcSqliteDriver
+import javax.swing.filechooser.FileSystemView
+import java.nio.file.Files
+import java.nio.file.Paths
+import me.kruase.db.*
 
 
 val oneLineButtonHeight by lazy { 34.dp }
 
 
 @Composable
-@Preview
 fun App() {
+    val dbPath = Paths.get(FileSystemView.getFileSystemView().defaultDirectory.path, "ComposePlayground")
+    Files.createDirectories(dbPath)
+
+    val driver = JdbcSqliteDriver("jdbc:sqlite:${Paths.get(dbPath.toString(), "base.db")}")
+    Database.Schema.create(driver)
+    val db = Database(driver)
+
+    val hotelQueries = db.hotelQueries
+    hotelQueries.insert(Hotel(
+        name = "Интеграл",
+        region_id = 1L,
+        phone = "88005553535",
+        manager_id = 2L,
+        description = "Мотемотический отель"
+    ))
+
     var text by remember { mutableStateOf("Hello, World!") }
-    var otherText = "Compose Desktop is wonderful!"
+    var otherText = hotelQueries.selectAll().executeAsList()[0].run { "$name - $description" }
 
     MaterialTheme {
         Box(
