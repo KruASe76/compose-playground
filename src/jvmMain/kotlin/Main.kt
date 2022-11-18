@@ -1,14 +1,7 @@
-package me.kruase.compose_playground
-
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -18,9 +11,10 @@ import javax.swing.filechooser.FileSystemView
 import java.nio.file.Files
 import java.nio.file.Paths
 import me.kruase.db.*
+import ui.common.MainTheme
 
 
-val oneLineButtonHeight by lazy { 34.dp }
+val oneLineButtonHeight by lazy { 40.dp }
 
 
 @Composable
@@ -33,32 +27,36 @@ fun App() {
     val db = Database(driver)
 
     val hotelQueries = db.hotelQueries
-    hotelQueries.insert(Hotel(
-        name = "Интеграл",
-        region_id = 1L,
-        phone = "88005553535",
-        manager_id = 2L,
-        description = "Мотемотический отель"
-    ))
+    if (hotelQueries.selectAll().executeAsList().isEmpty()) {
+        hotelQueries.insert(Hotel(
+            name = "Интеграл",
+            region_id = 1L,
+            phone = "88005553535",
+            manager_id = 2L,
+            description = "Мотемотический отель"
+        ))
+    }
 
     var text by remember { mutableStateOf("Hello, World!") }
     var otherText = hotelQueries.selectAll().executeAsList()[0].run { "$name - $description" }
 
-    MaterialTheme {
-        Box(
+    MainTheme {
+        Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black),
-            contentAlignment = Alignment.TopCenter
         ) {
-            Button(
-                onClick = {
-                    text = otherText.also { otherText = text }
-                },
-                modifier = Modifier
-                    .heightIn(max = oneLineButtonHeight)
+            Row(
+                horizontalArrangement = Arrangement.Center
             ) {
-                Text(text)
+                Button(
+                    onClick = {
+                        text = otherText.also { otherText = text }
+                    },
+                    modifier = Modifier
+                        .heightIn(max = oneLineButtonHeight)
+                ) {
+                    Text(text)
+                }
             }
         }
     }

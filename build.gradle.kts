@@ -9,9 +9,9 @@ plugins {
 
 group = "me.kruase"
 version = "1.0.0"
+val release = "8"
 
 repositories {
-    google()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     maven("https://mvnrepository.com/artifact/com.squareup.sqldelight/runtime-jvm")
@@ -39,10 +39,9 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "me.kruase.compose_playground.MainKt"
+        mainClass = "MainKt"
 
         nativeDistributions {
-            packageName = "Compose Playground"
             packageVersion = version.toString()
 
             modules("java.sql")
@@ -54,7 +53,8 @@ compose.desktop {
             )
 
             windows {
-                iconFile.set(project.file("icons/Compose Playground.ico"))
+                packageName = "ComposePlayground"
+                iconFile.set(project.file("icons/ComposePlayground.ico"))
                 dirChooser = true
                 shortcut = true
                 menu = true
@@ -62,8 +62,9 @@ compose.desktop {
             }
 
             linux {
-                iconFile.set(project.file("icons/Compose Playground.png"))
-                appRelease = "8"
+                packageName = "compose-playground"
+                iconFile.set(project.file("icons/ComposePlayground.png"))
+                appRelease = release
                 shortcut = true
             }
         }
